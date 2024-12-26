@@ -84,7 +84,7 @@
     <script>
         $(function(){
             $("#myFile").on("change",function(e){
-                const photoImp = $('#myFile');
+                const photoInp = $('#myFile');
                 const [file] = this.files;
                 if(file)
                 {
