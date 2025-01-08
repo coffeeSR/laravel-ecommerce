@@ -21,7 +21,7 @@
             <em>Manage Your Items List</em>
           </span>
         </a>
-        <a href="javascript:void(0)" class="checkout-steps__item">
+        <a href="{{ route('cart.checkout') }}" class="checkout-steps__item">
           <span class="checkout-steps__item-number">02</span>
           <span class="checkout-steps__item-title">
             <span>Shipping and Checkout</span>
@@ -105,17 +105,28 @@
             </tbody>
           </table>
           <div class="cart-table-footer">
+
+            @if(!Session::has('coupon'))
             <form action="{{ route('cart.coupon.apply') }}" method="POST" class="position-relative bg-body">
             @csrf
-              <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code" value="@if(Session::has('coupon')) {{ Session::get('coupon')['code'] }} Applied! @endif">
+              <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code" value="">
               <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit"
                 value="APPLY COUPON">
+            </form>
+            @else
+            <form action="{{ route('cart.coupon.remove') }}" method="POST" class="position-relative bg-body">
+            @csrf
+            @method('DELETE')
+              <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code" value="@if(Session::has('coupon')) {{ Session::get('coupon')['code'] }} Applied! @endif">
+              <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit"
+                value="REMOVE COUPON">
             </form>
             <form action="{{ route('cart.empty') }}" method="POST">
             @csrf
             @method('DELETE')
               <button class="btn btn-light" type="submit">CLEAR CART</button>
             </form>
+            @endif
           </div>
           <div>
             @if(Session::has('success'))
@@ -183,7 +194,7 @@
             </div>
             <div class="mobile_fixed-btn_wrapper">
               <div class="button-wrapper container">
-                <a href="checkout.html" class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</a>
+                <a href="{{ route('cart.checkout') }}" class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</a>
               </div>
             </div>
           </div>
